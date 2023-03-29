@@ -1,19 +1,22 @@
 import InputField from "../../../../components/InputField";
 import { useForm } from "react-hook-form";
-import bg from "../../../../assets/bg.jpg";
 import { getEncryptionKey } from "../../api";
 import { login } from "./api";
 import { useDispatch } from "react-redux";
 import { validate } from "../../../../redux/slices/authSlice";
 import encrypt from "../../../../helper/encryptor";
 import { setUser } from "../../../../redux/slices/userSlice";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   const {
     register,
     handleSubmit,
+    formState,
     formState: { errors },
   } = useForm();
+
+  const { isSubmitting } = formState;
 
   const dispatch = useDispatch();
 
@@ -53,9 +56,12 @@ const LoginPage = () => {
         register={register}
         isRequired={true}
       />
-      <button className="w-full p-2 my-4 rounded-lg bg-purple-400 text-white">
+      <button className="w-full p-2 my-4 rounded-lg bg-purple-400 text-white" disabled={isSubmitting}>
         Login
       </button>
+      <div className="text-center text-sm text-indigo-400 underline underline-offset-2 decoration-dashed hover:no-underline duration-200">
+        <a href="/auth/register">or sign up</a>
+      </div>
     </form>
   );
 };

@@ -12,8 +12,11 @@ const RegisterPage = () => {
   const {
     register,
     handleSubmit,
+    formState,
     formState: { errors },
   } = useForm();
+
+  const { isSubmitting } = formState;
 
   const dispatch = useDispatch();
 
@@ -76,6 +79,9 @@ const RegisterPage = () => {
       <button className="w-full p-2 my-4 rounded-lg bg-purple-400 text-white">
         Register
       </button>
+      <div className="text-center text-sm text-indigo-400 underline underline-offset-2 decoration-dashed hover:no-underline duration-200">
+        <a href="/auth/login">or log in</a>
+      </div>
     </form>
   );
 };

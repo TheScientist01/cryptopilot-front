@@ -3,13 +3,12 @@ import mobile from "../../assets/phoneTrading.png";
 import Box from "../../components/Box";
 import research from "../../assets/research.png";
 import analytics from "../../assets/analytics.png";
-import laptop from "../../assets/laptop.png";
 
 const HomePage = () => {
   return (
     <div className="mx-auto">
       <Header />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[200px] gap-y-9 w-[90%] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[200px] gap-y-9 w-[90%] mx-auto mt-9">
         <div className="my-auto mx-auto md:ml-auto w-[400px]">
           <div className="font-bold text-lg text-transparent w-[200px] bg-clip-text bg-gradient-to-r from-purple-800 via-blue-400 to-pink-600">
             *30 Days free trial
