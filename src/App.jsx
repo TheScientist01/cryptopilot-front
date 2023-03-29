@@ -16,7 +16,7 @@ function App() {
           <Route path="login" element={<LoginPage />}></Route>
         </Route>
         <Route path="home" element={<HomePage />}></Route>
-        <Route path="dashboard" element={<DashboardPage />}></Route>
+        <Route path="dashboard/:name" element={<DashboardPage />}></Route>
         <Route path="" element={<Navigate to="home" />} />
       </Routes>
     </BrowserRouter>

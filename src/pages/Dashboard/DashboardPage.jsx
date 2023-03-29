@@ -6,6 +6,7 @@ import csv from "../../assets/csvjson.json";
 import triangleRed from "../../assets/triangleRed.png";
 import triangleGreen from "../../assets/triangleGreen.png";
 import { Tab } from "@headlessui/react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function convertData(data) {
   let convertedData = [];
@@ -66,7 +67,10 @@ const cryptoList = [
 const DashboardPage = () => {
   const [duration, setDuration] = useState(30);
 
-  var options = {
+  const { name } = useParams();
+  const navigate = useNavigate();
+
+  let options = {
     series: [
       {
         data: data,
@@ -237,19 +241,11 @@ const DashboardPage = () => {
           ],
         },
       },
-      // tooltip: {
-      //   enabled: true,
-      //   formatter: function(val, opts) {
-      //     return `<div class="bg-white rounded-lg ">${val}</div>`
-      //   }
-      // },
     },
     yaxis: {
       decimalsInFloat: 2,
       tickAmount: 8,
-
       tooltip: { enabled: true },
-
       labels: {
         style: {
           colors: ["#C9C4D2"],
@@ -335,15 +331,73 @@ const DashboardPage = () => {
     },
   };
 
+  let lineOptions = {
+    chart: {
+      height: 150,
+      type: "area",
+      stacked: false,
+      toolbar: { show: false },
+      zoom: { enabled: false },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    fill: {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.1,
+        opacityTo: 0.7,
+        stops: [0, 90, 100],
+      },
+    },
+    colors: ["#7422DD"],
+    series: [
+      {
+        name: "Series A",
+        data: data.slice(90)
+      },
+    ],
+    stroke: {
+      width: 2,
+    },
+    grid: { show: false },
+    plotOptions: {
+      bar: {
+        columnWidth: "10%",
+      },
+    },
+    xaxis: {
+      labels: { show: false },
+      axisTicks:{show:false}
+    },
+    yaxis: [{ labels: { show: false } }],
+    tooltip: {
+      shared: false,
+      intersect: true,
+      x: {
+        show: false,
+      },
+    },
+  };
+
   useEffect(() => {
     let chart = new ApexCharts(document.querySelector("#chart"), options);
+    let optionsChart = new ApexCharts(
+      document.querySelector("#linechart"),
+      lineOptions
+    );
     chart.render();
+    optionsChart.render();
     chart.zoomX(
       new Date(data[data.length - duration - 1].x).getTime(),
       new Date(data[data.length - 1].x).getTime()
     );
 
-    return () => chart.destroy();
+    return () => {
+      chart.destroy();
+      optionsChart.destroy();
+    };
   }, [duration]);
 
   return (
@@ -352,7 +406,15 @@ const DashboardPage = () => {
         <div className="text-[35px] font-semibold mb-5">Logo</div>
         <hr></hr>
         {cryptoList.map((crypto) => (
-          <div className="flex gap-2 mt-2 rounded-lg p-1 hover:bg-[#7422DD] hover:bg-opacity-10 hover:text-[#7422DD] duration-200 cursor-pointer">
+          <div
+            onClick={() => {
+              navigate(`/dashboard/${crypto.name.toLocaleLowerCase()}`);
+            }}
+            className={`flex gap-2 mt-2 rounded-lg p-1 ${
+              crypto.name.toLocaleLowerCase() === name &&
+              "bg-[#7422DD] text-[#7422DD] bg-opacity-10"
+            } hover:bg-[#7422DD] hover:bg-opacity-10 hover:text-[#7422DD] duration-200 cursor-pointer`}
+          >
             <div className="rounded-md w-[30px] h-[30px] p-1.5 my-auto bg-white shadow-card-100">
               <img src={crypto.url} />
             </div>
@@ -385,7 +447,23 @@ const DashboardPage = () => {
             <div className="text-[35px] text-white">Ethereum</div>
           </div>
           <div className="grid grid-cols-10 gap-4">
-            <div className="col-span-4 h-[150px] rounded-xl bg-white shadow-card-100"></div>
+            <div className="col-span-4 grid grid-cols-7 justify-center p-6 h-[150px] rounded-xl bg-white shadow-card-100">
+              <div className="col-span-3">
+                <div className="text-gray-400 text-sm">ETH</div>
+                <div className="text-4xl font-semibold my-2">
+                  <span className="text-gray-400">$</span>130.35
+                </div>
+                <div className="text-green-600 flex gap-1">
+                  <div className="rounded-full p-1 text-xs bg-green-600 bg-opacity-40 ">
+                    <HiOutlineArrowDown />
+                  </div>
+                  <div className="text-xs my-auto">-0.98 (-0.75%)</div>
+                </div>
+              </div>
+              <div className="mt-[-20px] col-span-4">
+                <div id="linechart"></div>
+              </div>
+            </div>
             <div className="col-span-10 lg:col-span-6 grid grid-cols-3 gap-5 h-[150px] px-8 pt-7 rounded-xl bg-white shadow-card-100">
               <div>
                 <div className="text-gray-400 text-sm flex gap-0.5">

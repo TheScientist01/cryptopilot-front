@@ -7,8 +7,6 @@ const encrypt = (password, key) => {
 
   const encryptedPassword = encryptor.encrypt(password);
 
-  console.log(encryptedPassword);
-
   if (encryptedPassword === false) {
     return null;
   } else {
