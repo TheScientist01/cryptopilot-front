@@ -2,7 +2,6 @@ import axios from "axios";
 // import { updateAccessToken } from "./auth";
 
 export const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
-console.log(BASE_URL);
 
 export const axiosPublic = axios.create({ baseURL: BASE_URL });
 

@@ -2,13 +2,13 @@ import { VscBell } from "react-icons/vsc";
 import { HiOutlineArrowDown, HiOutlineArrowUp } from "react-icons/hi";
 import ApexCharts from "apexcharts";
 import { useEffect, useState } from "react";
-import csv from "../../assets/csvjson.json";
 import triangleRed from "../../assets/triangleRed.png";
 import triangleGreen from "../../assets/triangleGreen.png";
 import { Tab } from "@headlessui/react";
-import { useFetcher, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import useFetching from "../../hooks/useFetching";
+import { cryptoList } from "../../constants/cryptos";
 
 function convertData(res) {
   let convertedData = [];
@@ -28,45 +28,6 @@ let chart;
 
 const durationList = [14, 30, 90, 180, 364, 365 - 1];
 
-const cryptoList = [
-  { name: "Bitcoin", url: "https://cryptologos.cc/logos/bitcoin-btc-logo.png" },
-  {
-    name: "Ethereum",
-    url: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-  },
-  { name: "Cordano", url: "https://cryptologos.cc/logos/cardano-ada-logo.png" },
-  {
-    name: "Polkadot",
-    url: "https://cryptologos.cc/logos/polkadot-new-dot-logo.png",
-  },
-  {
-    name: "Solana",
-    url: "https://cryptologos.cc/logos/solana-sol-logo.png?v=024",
-  },
-  {
-    name: "Chainlink",
-    url: "https://cryptologos.cc/logos/chainlink-link-logo.png?v=024",
-  },
-  { name: "TRON", url: "https://cryptologos.cc/logos/tron-trx-logo.png?v=024" },
-  {
-    name: "Litecoin",
-    url: "https://cryptologos.cc/logos/litecoin-ltc-logo.png?v=024",
-  },
-  {
-    name: "Uniswap",
-    url: "https://cryptologos.cc/logos/uniswap-uni-logo.png?v=024",
-  },
-  {
-    name: "Avalanche",
-    url: "https://cryptologos.cc/logos/avalanche-avax-logo.png?v=024",
-  },
-  {
-    name: "Polygon",
-    url: "https://cryptologos.cc/logos/polygon-matic-logo.png?v=024",
-  },
-  { name: "OKB", url: "https://cryptologos.cc/logos/okb-okb-logo.png?v=024" },
-];
-
 const DashboardPage = () => {
   const [duration, setDuration] = useState(30);
 
@@ -79,7 +40,7 @@ const DashboardPage = () => {
     const res = await axios.post(
       "https://nest-v1.onrender.com/data/cryptos",
       {
-        ticker: "BTC-USD",
+        ticker: `${cryptoList[name].key}-USD`,
         interval: "1d",
         start_date: "2022-01-01",
         end_date: "2023-03-01",
@@ -453,6 +414,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     getCrypto();
+    
   }, []);
 
   return (
@@ -460,10 +422,11 @@ const DashboardPage = () => {
       <div className="w-[350px] py-9 pl-9">
         <div className="text-[35px] font-semibold mb-5">Logo</div>
         <hr></hr>
-        {cryptoList.map((crypto) => (
+        {Object.values(cryptoList).map((crypto) => (
           <div
             onClick={() => {
               navigate(`/dashboard/${crypto.name.toLocaleLowerCase()}`);
+              window.location.reload(false);
             }}
             className={`flex gap-2 mt-2 rounded-lg p-1 ${
               crypto.name.toLocaleLowerCase() === name &&
@@ -494,12 +457,12 @@ const DashboardPage = () => {
             <div className="rounded-md w-[45px] h-[45px] p-1.5 my-auto bg-gray-300 shadow-card-100 shadow-white">
               <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" />
             </div>
-            <div className="text-[35px] text-white">Ethereum</div>
+            <div className="text-[35px] text-white">{cryptoList[name].name}</div>
           </div>
           <div className="grid grid-cols-10 gap-4">
             <div className="col-span-10 lg:col-span-4 grid grid-cols-7 justify-center p-6 h-[150px] rounded-xl bg-white shadow-card-100">
               <div className="col-span-3">
-                <div className="text-gray-400 text-sm">ETH</div>
+                <div className="text-gray-400 text-sm">{cryptoList[name].key}</div>
                 <div className="text-4xl font-semibold my-2">
                   <span className="text-gray-400">$</span>130.35
                 </div>
