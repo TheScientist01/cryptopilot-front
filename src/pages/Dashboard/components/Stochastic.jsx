@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import triangleRed from "../../../assets/triangleRed.png";
 import triangleGreen from "../../../assets/triangleGreen.png";
 
-const RSI = ({ data }) => {
+const Stochastic = ({ data }) => {
   const [points, setPoints] = useState([]);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const RSI = ({ data }) => {
     data?.buy_dates?.map((d) => {
       tempPoints.push({
         date: new Date(d).getTime(),
-        point: data.rsi[data.dates.indexOf(d)],
+        point: data.k_percent[data.dates.indexOf(d)],
         type: "buy",
       });
     });
@@ -19,7 +19,7 @@ const RSI = ({ data }) => {
     data?.sell_dates?.map((d) => {
       tempPoints.push({
         date: new Date(d).getTime(),
-        point: data.rsi[data.dates.indexOf(d)],
+        point: data.k_percent[data.dates.indexOf(d)],
         type: "sell",
       });
     });
@@ -52,20 +52,19 @@ const RSI = ({ data }) => {
       },
 
       title: {
-        text: "EMA",
-        align: "center",
+        text: "Stochastic",
+        align: 'center',
         margin: 10,
         offsetX: 0,
         offsetY: 0,
         floating: false,
         style: {
-          fontSize: "15px",
-
-          fontWeight: "bold",
-          fontFamily: undefined,
-          color: "#263238",
+          fontSize:  '15px',
+          fontWeight:  'bold',
+          fontFamily:  undefined,
+          color:  '#263238'
         },
-      },
+    },
 
       dataLabels: {
         enabled: false,
@@ -73,9 +72,18 @@ const RSI = ({ data }) => {
       colors: ["#FF1654", "#247BA0"],
       series: [
         {
-          name: "RSI",
-          data: !!data?.rsi
-            ? data?.rsi.map((p, index) => [
+          name: "K",
+          data: !!data?.k_percent
+            ? data?.k_percent.map((p, index) => [
+                new Date(data.dates[index]).getTime(),
+                p,
+              ])
+            : [],
+        },
+        {
+          name: "D",
+          data: !!data?.d_percent
+            ? data?.d_percent.map((p, index) => [
                 new Date(data.dates[index]).getTime(),
                 p,
               ])
@@ -94,8 +102,8 @@ const RSI = ({ data }) => {
         points: points,
         yaxis: [
           {
-            y: 30,
-            y2: 70,
+            y: 20,
+            y2: 80,
             borderColor: "#000",
             fillColor: "#7422DD",
             dashArray: 4,
@@ -146,15 +154,10 @@ const RSI = ({ data }) => {
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();
 
-    // chart.zoomX(
-    //   new Date("01 Jan 2023").getTime(),
-    //   new Date("01 Mar 2023").getTime()
-    // )
-
     return () => chart.destroy();
   }, [points]);
 
   return <div className="bg-white rounded-lg p-4" id="chart"></div>;
 };
 
-export default RSI;
+export default Stochastic;

@@ -1,17 +1,18 @@
 import { useParams } from "react-router-dom"
-import RSI from "./RSI";
+
 import useFetching from "../../../hooks/useFetching";
-import { getRSI } from "../api";
+import { getStochastic } from "../api";
 import { useEffect, useState } from "react";
+import Stochastic from "./Stochastic";
 import Spinner from "../../../components/Spinner";
 
-const RSIPage=()=>{
+const StochasticPage=()=>{
     const {name}=useParams();
 
     const [data, setData]=useState({});
 
     const [getRsiRequest, isLoading]=useFetching(async ()=>{
-        const res=await getRSI(name);
+        const res=await getStochastic(name);
         setData(res);
     });
 
@@ -19,8 +20,8 @@ const RSIPage=()=>{
         getRsiRequest()
     },[]);
 
-    return !isLoading?<RSI data={data} />:<div className="w-full p-[80px] bg-white text-center rounded-lg"><Spinner /></div>;
+    return !isLoading?<Stochastic data={data} />:<div className="w-full p-[80px] bg-white text-center rounded-lg"><Spinner /></div>;
 
 }
 
-export default RSIPage;
+export default StochasticPage;

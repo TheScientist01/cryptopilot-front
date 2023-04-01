@@ -49,6 +49,14 @@ function App() {
               path="dashboard/:name/rsi"
               element={<DashboardPage page="rsi" />}
             ></Route>
+            <Route
+              path="dashboard/:name/stochastic"
+              element={<DashboardPage page="stochastic" />}
+            ></Route>
+            <Route
+              path="dashboard/:name/ema"
+              element={<DashboardPage page="ema" />}
+            ></Route>
           </Route>
           <Route
             path=""

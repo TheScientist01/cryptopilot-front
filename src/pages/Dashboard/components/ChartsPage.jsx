@@ -6,10 +6,8 @@ import { cryptoList } from "../../../constants/cryptos";
 import useFetching from "../../../hooks/useFetching";
 import ApexCharts from "apexcharts";
 import { useEffect, useState } from "react";
-import triangleRed from "../../../assets/triangleRed.png";
-import triangleGreen from "../../../assets/triangleGreen.png";
 import { getCoin } from "../api";
-import { getAllIndicators } from "../api";
+import Spinner from "../../../components/Spinner";
 
 function convertData(data) {
   const newData = [];
@@ -17,21 +15,20 @@ function convertData(data) {
   for (let i = 0; i < data.index.length; i++) {
     newData.push({
       x: data.index[i],
-      y: [data.open[i], data.high[i], data.low[i], data.close[i]]
+      y: [data.open[i], data.high[i], data.low[i], data.close[i]],
     });
   }
 
   return newData;
 }
 
-
 let chart;
 
-const durationList = [14, 30, 90, 180, 364, 365 - 1];
+const durationList = [14, 30, 90, 180, 364, 366 - 1];
 
 const ChartsPage = () => {
   const { name } = useParams();
-  const [duration, setDuration] = useState(30);
+  const [duration, setDuration] = useState(365);
   const [periodicDifference, setPeriodicDifference] = useState([0, 0, false]);
 
   const [data, setData] = useState([]);
@@ -42,49 +39,6 @@ const ChartsPage = () => {
   });
 
   const [points, setPoints] = useState([]);
-
-  const get = async () => {
-    const res = await getAllIndicators(name);
-
-    let tempPoints = [];
-
-    res.rsi?.buy_points?.map((p, index) => {
-      tempPoints.push({
-        date: res.rsi.buy_dates[index],
-        point: p,
-        type: "buy",
-      });
-    });
-    res.rsi?.sell_points?.map((p, index) => {
-      tempPoints.push({
-        date: res.rsi.sell_dates[index],
-        point: p,
-        type: "sell",
-      });
-    });
-
-    setPoints(
-      tempPoints.map((p) => ({
-        x: new Date(p.date).getTime(),
-        y: p.point,
-        yAxisIndex: 0,
-        seriesIndex: 0,
-        mouseEnter: undefined,
-        mouseLeave: undefined,
-        click: undefined,
-        marker: {
-          size: 0,
-        },
-        image: {
-          path: p.type === "buy" ? triangleGreen : triangleRed,
-          width: 7,
-          height: 7,
-          offsetX: 0,
-          offsetY: 0,
-        },
-      }))
-    );
-  };
 
   useEffect(() => {
     if (!isLoading && data.length !== 0 && !!data) {
@@ -350,13 +304,20 @@ const ChartsPage = () => {
     getCrypto();
   }, []);
 
-  return (
+  const currentPrice = (data) => {
+    let price = 0;
+    data[data.length - 1]?.y.map((p) => (price += p));
+    return (price / 4).toFixed(2);
+  };
+
+  return !isLoading ? (
     <div className="grid grid-cols-10 gap-4">
       <div className="col-span-10 lg:col-span-4 grid grid-cols-7 justify-center p-6 h-[150px] rounded-xl bg-white shadow-card-100">
         <div className="col-span-3">
           <div className="text-gray-400 text-sm">{cryptoList[name].key}</div>
           <div className="text-4xl font-semibold my-2">
-            <span className="text-gray-400">$</span>1630.23
+            <span className="text-gray-400">$</span>
+            {currentPrice(data)}
           </div>
           <div
             className={` ${
@@ -392,7 +353,8 @@ const ChartsPage = () => {
             <VscBell className="my-auto" />
           </div>
           <div className="text-2xl font-semibold">
-            <span className="text-gray-400">$</span>1630.23
+            <span className="text-gray-400">$</span>
+            {currentPrice(data) * (1.005).toFixed(2)}
           </div>
           <div className="mt-4 text-red-800 flex gap-1">
             <div className="rounded-full p-1 text-xs bg-red-800 bg-opacity-40 ">
@@ -492,10 +454,10 @@ const ChartsPage = () => {
         <div className="mt-5" id="chart" />
         <div id="chartBar"></div>
       </div>
-      {/* <div className="col-span-3 grid grid-rows-10 gap-4">
-          <div className="row-span-3 rounded-xl bg-white shadow-card-100"></div>
-          <div className="row-span-7 rounded-xl bg-white shadow-card-100"></div>
-        </div> */}
+    </div>
+  ) : (
+    <div className="w-full p-[80px] bg-white text-center rounded-lg">
+      <Spinner />
     </div>
   );
 };

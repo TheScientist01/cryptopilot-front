@@ -62,12 +62,29 @@ export const getBollinger = async (name) => {
   return res.data;
 };
 
+export const getEMA=async (name)=>{
+  const res = await axios.post(
+    BASE_URL + "/data/ema",
+    {
+      ticker: `${cryptoList[name].key}-USD`,
+      interval: "1d",
+      slow: 50,
+      fast: 20
+    },
+    { headers: { "access-token": localStorage.getItem("accessToken") } }
+  );
+
+  return res.data;
+}
+
 export const getStochastic = async (name) => {
   const res = await axios.post(
     BASE_URL + "/data/stochastic",
     {
       ticker: `${cryptoList[name].key}-USD`,
       interval: "1d",
+      start_date: "2022-03-01",
+      end_date: "2023-03-01"
     },
     { headers: { "access-token": localStorage.getItem("accessToken") } }
   );
@@ -79,11 +96,11 @@ export const getAllIndicators = async (name) => {
   let results = {};
 
   const rsi = await getRSI(name);
-  // const ma = await getMA(name);
   const bb = await getBollinger(name);
   const stochastic = await getStochastic(name);
+  const ema=await getEMA(name);
 
-  results = { rsi: rsi, bb: bb, stochastic: stochastic };
+  results = { rsi: rsi, bb: bb, stochastic: stochastic, ema:ema };
 
   return results;
 };

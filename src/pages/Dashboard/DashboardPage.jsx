@@ -11,6 +11,8 @@ import { logoutAuth } from "../../redux/slices/authSlice";
 import { useDispatch } from "react-redux";
 import { excelExport, objectToArray } from "../../helper/excelExport";
 import { getCoin } from "./api";
+import StochasticPage from "./components/StochasticPage";
+import EMAPage from "./components/EMAPage";
 
 const DashboardPage = ({ page }) => {
   const { name } = useParams();
@@ -20,7 +22,9 @@ const DashboardPage = ({ page }) => {
   const pageList={
     chart: <ChartsPage />,
     indicators: <IndicatorsPage />,
-    rsi: <RSIPage />
+    rsi: <RSIPage />,
+    stochastic: <StochasticPage />,
+    ema: <EMAPage />
   }
 
   const user=useSelector(selectUser);
@@ -36,7 +40,7 @@ const DashboardPage = ({ page }) => {
   }
 
   return (
-    <div style={{ fontFamily: "Helvetica" }} className="flex">
+    <div style={{ fontFamily: "Helvetica" }} className="flex min-h-[100vh]">
       <div className="w-[350px] py-9 pl-9 relative">
         <div className="text-[27px] font-semibold mb-5">CryptoKraken</div>
         <hr></hr>
@@ -58,7 +62,7 @@ const DashboardPage = ({ page }) => {
           </div>
         ))}
         <div className="absolute left-6 bottom-0">
-            <div className="p-5 flex gap-4">
+            <div className="p-5 flex gap-4 bg-white">
               <div className="my-auto"><FaUserCircle className="text-4xl text-[#7422dd]" /></div>
               <div>
                 <div className="font-bold text-lg">{user.username}</div>
@@ -111,13 +115,39 @@ const DashboardPage = ({ page }) => {
               </div>
               <div
                 onClick={() => {
+                  if (page !== "stochastic")
+                    navigate(
+                      `/dashboard/${name.toLocaleLowerCase()}/stochastic`
+                    );
+                }}
+                className={`${
+                  page !== "stochastic" && "text-[#969696]"
+                } cursor-pointer`}
+              >
+                Stochastic
+              </div>
+              <div
+                onClick={() => {
+                  if (page !== "ema")
+                    navigate(
+                      `/dashboard/${name.toLocaleLowerCase()}/ema`
+                    );
+                }}
+                className={`${
+                  page !== "ema" && "text-[#969696]"
+                } cursor-pointer`}
+              >
+                EMA
+              </div>
+              <div
+                onClick={() => {
                   if (page !== "rsi")
                     navigate(
                       `/dashboard/${name.toLocaleLowerCase()}/rsi`
                     );
                 }}
                 className={`${
-                  page !== "rsi" && "text-[#969696]"
+                  page !== "rsiii" && "text-[#969696]"
                 } cursor-pointer`}
               >
                 MACD
@@ -148,33 +178,6 @@ const DashboardPage = ({ page }) => {
               >
                 Moving Average
               </div>
-              <div
-                onClick={() => {
-                  if (page !== "rsi")
-                    navigate(
-                      `/dashboard/${name.toLocaleLowerCase()}/rsi`
-                    );
-                }}
-                className={`${
-                  page !== "rsii" && "text-[#969696]"
-                } cursor-pointer`}
-              >
-                Stochastic
-              </div>
-              <div
-                onClick={() => {
-                  if (page !== "rsi")
-                    navigate(
-                      `/dashboard/${name.toLocaleLowerCase()}/rsi`
-                    );
-                }}
-                className={`${
-                  page !== "rsii" && "text-[#969696]"
-                } cursor-pointer`}
-              >
-                EMA
-              </div>
-              
             </div>
             <button onClick={handleSaveData} className="rounded-md bg-[#2E2E2E] font-semibold text-sm py-2 px-5">
               Save data

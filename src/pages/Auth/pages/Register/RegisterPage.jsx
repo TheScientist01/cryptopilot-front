@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { registerUser } from "./api";
 import { validate } from "../../../../redux/slices/authSlice";
 import { setUser } from "../../../../redux/slices/userSlice";
+import Spinner from "../../../../components/Spinner";
 
 const RegisterPage = () => {
   const {
@@ -77,7 +78,7 @@ const RegisterPage = () => {
         isRequired={true}
       />
       <button className="w-full p-2 my-4 rounded-lg bg-purple-400 text-white">
-        Register
+      {isSubmitting?<Spinner size="small" />:"Login"}
       </button>
       <div className="text-center text-sm text-indigo-400 underline underline-offset-2 decoration-dashed hover:no-underline duration-200">
         <a href="/auth/login">or log in</a>
