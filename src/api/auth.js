@@ -1,15 +1,9 @@
 import { axiosPrivate, axiosPublic } from "./axios";
+import { BASE_URL } from "./axios";
+import axios from "axios";
 
 export const logout = async () => {
-  const url = "/auth/logout";
-  return await axiosPrivate.post(
-    url,
-    {},
-    {
-      "Authorization-Refresh": `${localStorage.getItem("refreshToken")}`,
-      withCredentials: true,
-    }
-  );
+  axios.post(`${BASE_URL}/auth/logout`, { headers: { "access-token": localStorage.getItem("accessToken") } });
 };
 
 export const getCurrentUser = async () => {

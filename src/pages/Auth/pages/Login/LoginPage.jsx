@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { validate } from "../../../../redux/slices/authSlice";
 import encrypt from "../../../../helper/encryptor";
 import { setUser } from "../../../../redux/slices/userSlice";
-import { Link } from "react-router-dom";
+
 
 const LoginPage = () => {
   const {
@@ -56,7 +56,7 @@ const LoginPage = () => {
         register={register}
         isRequired={true}
       />
-      <button className="w-full p-2 my-4 rounded-lg bg-purple-400 text-white">
+      <button disabled={isSubmitting} className="w-full p-2 my-4 rounded-lg bg-purple-400 text-white">
         Login
       </button>
       <div className="text-center text-sm text-indigo-400 underline underline-offset-2 decoration-dashed hover:no-underline duration-200">

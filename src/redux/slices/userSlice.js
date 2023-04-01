@@ -15,11 +15,6 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       for (const key in state) {
         if (key in action.payload) {
-          if (key === "vacations") {
-            action.payload[key] = action.payload[key].map((item) => {
-              return { ...item };
-            });
-          }
           state[key] = action.payload[key];
         }
       }

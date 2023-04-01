@@ -20,12 +20,10 @@ function App() {
         <Routes>
           <Route
             element={
-              <ValidatePath condition={isAuth} navigateTo={"/auth/login"} />
-            }
-          />
-          <Route
-            element={
-              <ValidatePath condition={!isAuth} navigateTo={"/dashboard/bitcoin"} />
+              <ValidatePath
+                condition={!isAuth}
+                navigateTo={"/dashboard/bitcoin/chart"}
+              />
             }
           >
             <Route path="auth" element={<AuthLayout />}>
@@ -34,8 +32,34 @@ function App() {
             </Route>
           </Route>
           <Route path="home" element={<HomePage />}></Route>
-          <Route path="dashboard/:name" element={<DashboardPage />}></Route>
-          <Route path="" element={isAuth?<Navigate to="dashboard/bitcoin" /> : <Navigate to="home" />} />
+          <Route
+            element={
+              <ValidatePath condition={isAuth} navigateTo={"/auth/login"} />
+            }
+          >
+            <Route
+              path="dashboard/:name/chart"
+              element={<DashboardPage page="chart" />}
+            ></Route>
+            <Route
+              path="dashboard/:name/indicators"
+              element={<DashboardPage page="indicators" />}
+            ></Route>
+            <Route
+              path="dashboard/:name/rsi"
+              element={<DashboardPage page="rsi" />}
+            ></Route>
+          </Route>
+          <Route
+            path=""
+            element={
+              isAuth ? (
+                <Navigate to="dashboard/bitcoin/chart" />
+              ) : (
+                <Navigate to="home" />
+              )
+            }
+          />
         </Routes>
       </WhoAmIWrapper>
     </BrowserRouter>
