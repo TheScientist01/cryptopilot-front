@@ -52,7 +52,7 @@ const RSI = ({ data }) => {
       },
 
       title: {
-        text: "EMA",
+        text: "RSI",
         align: "center",
         margin: 10,
         offsetX: 0,
