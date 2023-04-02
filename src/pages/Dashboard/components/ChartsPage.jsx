@@ -372,7 +372,7 @@ const ChartsPage = () => {
             {data[data.length - 1]?.y[3]?.toFixed(2)}
           </div>
           <div className="mt-4 text-gray-400 text-xs flex gap-2">
-            Mar 31, 9:30pm
+            {new Date(data[data.length-1]?.x)?.toLocaleString('default', { month: 'short' })} {new Date(data[data.length-1]?.x).getDay()}, 9:30pm
           </div>
         </div>
         <div>
@@ -382,7 +382,7 @@ const ChartsPage = () => {
             {data[data.length - 1]?.y[0]?.toFixed(2)}
           </div>
           <div className="mt-4 text-gray-400 text-xs flex gap-2">
-            Mar 30, 9:30pm
+          {new Date(data[data.length-1]?.x)?.toLocaleString('default', { month: 'short' })} {new Date(data[data.length-1]?.x).getDay()-1}, 9:30pm
           </div>
         </div>
       </div>
