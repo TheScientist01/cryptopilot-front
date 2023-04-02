@@ -24,7 +24,7 @@ export const getRSI = async (name) => {
     {
       ticker: `${cryptoList[name].key}-USD`,
       interval: "1h",
-      start_date: "2023-02-01",
+      start_date: "2023-01-01",
       end_date: "2023-03-01"
     },
     { headers: { "access-token": localStorage.getItem("accessToken") } }
@@ -38,7 +38,9 @@ export const getMA = async (name) => {
     BASE_URL + "/data/ma",
     {
       ticker: `${cryptoList[name].key}-USD`,
-      interval: "1d",
+      interval: "1h",
+      start_date: "2023-01-01",
+      end_date: "2023-03-01",
       day1: 5,
       day2: 10,
     },
@@ -53,7 +55,9 @@ export const getBollinger = async (name) => {
     BASE_URL + "/data/bollinger_bands",
     {
       crypto: `${cryptoList[name].key}-USD`,
-      interval: "1d",
+      interval: "1h",
+      start_date: "2023-01-01",
+      end_date: "2023-03-01",
       window: 20,
     },
     { headers: { "access-token": localStorage.getItem("accessToken") } }
@@ -67,7 +71,9 @@ export const getEMA=async (name)=>{
     BASE_URL + "/data/ema",
     {
       ticker: `${cryptoList[name].key}-USD`,
-      interval: "1d",
+      interval: "1h",
+      start_date: "2023-01-01",
+      end_date: "2023-03-01",
       slow: 50,
       fast: 20
     },
@@ -82,8 +88,8 @@ export const getStochastic = async (name) => {
     BASE_URL + "/data/stochastic",
     {
       ticker: `${cryptoList[name].key}-USD`,
-      interval: "1d",
-      start_date: "2022-03-01",
+      interval: "1h",
+      start_date: "2023-01-01",
       end_date: "2023-03-01"
     },
     { headers: { "access-token": localStorage.getItem("accessToken") } }

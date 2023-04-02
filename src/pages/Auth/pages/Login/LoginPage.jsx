@@ -22,11 +22,12 @@ const LoginPage = () => {
   const dispatch = useDispatch();
 
   const loginUser = async (data) => {
-    const key = await getEncryptionKey();
+    // const key = await getEncryptionKey();
     const res = await login({
       username: data.username,
-      encryptedPassword: encrypt(data.password, key.data.key),
-      keyID: key.data.id,
+      // encryptedPassword: encrypt(data.password, key.data.key),
+      password: data.password,
+      // keyID: key.data.id,
     });
     dispatch(validate(res.data.tokens));
     dispatch(setUser(res.data.user));

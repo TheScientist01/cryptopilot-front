@@ -22,48 +22,10 @@ const IndicatorsPage = () => {
   }, []);
 
   return !isLoading ? (
-    <div className="grid grid-flow-row">
+    <div className="grid grid-flow-row pb-4">
       {Object.keys(data)?.map((i) => {
         return <IndicatorBox data={data[i]} name={indicators[i]} />;
       })}
-     
-      <div className="rounded-lg w-full h-[180px] mt-4 p-0">
-        <div className="grid grid-cols-4">
-          <div className="rounded-t-md h-fit bg-[#7422DD] text-white py-1 pl-3">
-            MACD
-          </div>
-        </div>
-        <div className="h-[150px] bg-white shadow-card-100 rounded-b-lg rounded-r-lg grid grid-cols-4 p-5">
-          <div className="text-center">
-            <div className="text-gray-400">Total</div>
-            <div className="text-5xl font-semibold">207</div>
-            <div className="mt-4 text-gray-400">signals</div>
-          </div>
-
-          <div className="text-center">
-            <div className="text-gray-400">Buy</div>
-            <div className="text-5xl font-semibold text-red-800">
-              {/* {data?.buy_points?.length} */}
-              95
-            </div>
-            <div className="mt-4 text-gray-400">signals</div>
-          </div>
-
-          <div className="text-center">
-            <div className="text-gray-400">Sell</div>
-            <div className="text-5xl text-green-600 font-semibold">
-              {/* {data?.sell_points?.length} */}
-              112
-            </div>
-            <div className="mt-4 text-gray-400">signals</div>
-          </div>
-
-          <div className="text-center">
-            <div className="text-gray-400">Win rate</div>
-            <div className={`text-6xl text-[#60de46] font-semibold`}>61.2%</div>
-          </div>
-        </div>
-      </div>
     </div>
   ) : <div className="w-full p-[80px] bg-white text-center rounded-lg"><Spinner /></div>;
 };
